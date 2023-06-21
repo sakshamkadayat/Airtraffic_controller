@@ -1,0 +1,1039 @@
+<html>
+
+<head>
+	<style>
+		.runway {
+			width: 70%;
+			margin-bottom: 10px;
+			margin-right: 5px;
+			position: relative;
+			left: 10px;
+			top: 5px;
+			background-color: #C7C7C7;
+			height: 14%;
+			border-style: solid;
+			border-width: 0px;
+			text-align: center;
+			border-radius: 30px;
+			padding-top: 5px;
+		}
+
+		.torunway {
+			width: 20%;
+			margin-left: 10px;
+			margin-bottom: 10px;
+			position: relative;
+			left: 0px;
+			top: 5px;
+			background-color: #C7C7C7;
+			height: 14%;
+			border-style: solid;
+			border-width: 0px;
+			border-radius: 20px;
+		}
+
+		.boarding {
+			width: 90%;
+			margin: 2px;
+			position: relative;
+			left: 10px;
+			top: 2px;
+			background-color: #F8665E;
+			height: 14%;
+			border-style: solid;
+			border-width: 0px;
+			border-radius: 100px;
+			text-align: center;
+		}
+
+		.gate {
+			float: left;
+			width: 15%;
+			margin-left: 10px;
+			margin-right: 10px;
+			margin-top: 0px;
+			position: relative;
+			left: 10px;
+			top: 2px;
+			background-color: #F8665E;
+			height: 18%;
+			border-radius: 50px;
+		}
+
+		.controls {
+			float: left;
+			width: 15%;
+			margin-left: 8px;
+			margin-right: 10px;
+			margin-top: 0px;
+			position: relative;
+			left: 0px;
+			top: 10px;
+			background-color: #989800;
+			height: 18%;
+			border-style: solid;
+			border-width: 0px;
+			border-radius: 10px;
+		}
+
+		.standingPlane {
+			position: relative;
+			left: 30%;
+			top: 40%;
+			width: 55px;
+			height: 55px;
+		}
+
+		h2 {
+			letter-spacing: 30px;
+			margin-left: auto;
+			margin-right: auto;
+			color: yellow;
+			text-align: left;
+			padding-left: 80px;
+		}
+
+		h3 {
+			letter-spacing: 20px;
+			margin-left: auto;
+			margin-right: auto;
+			color: red;
+		}
+
+		.pane {
+			width: 100%;
+			position: relative;
+			text-align: center;
+			color: #fff;
+			font-family: monospace;
+
+		}
+
+		div[class="pane"] span {
+			background-color: black;
+		}
+
+		.background {
+			position: absolute;
+			text-align: left;
+			font-family: monospace;
+			color: #fff;
+			top: 15;
+			left: 10;
+			bottom: 0;
+			right: 0;
+			overflow: hidden;
+		}
+
+		.atccontrols {
+			position: absolute;
+			text-align: right;
+			color: yellow;
+			top: 10;
+			left: 0;
+			bottom: 0;
+			right: 0;
+			overflow: hidden;
+		}
+
+		.pathway {
+			position: absolute;
+			text-align: right;
+			color: #fff;
+			font-size: 15;
+			width: 90%;
+			font-family: monospace;
+			top: 10%;
+			overflow: hidden;
+
+		}
+	</style>
+
+	<script>
+
+		var runwayDetails = [
+
+			{
+				runwayname: 'runway1',
+				runwaystartsattop: "-510",
+				planetype: '',
+				flightnum: '',
+				status: "Open",
+				nextavailableat: ''
+			},
+			{
+				runwayname: 'runway2',
+				runwaystartsattop: "-410",
+				planetype: '',
+				flightnum: '',
+				status: "Open",
+				nextavailableat: ''
+
+			},
+			{
+				runwayname: 'runway3',
+				runwaystartsattop: "-300",
+				planetype: '',
+				flightnum: '',
+				status: "Open",
+				nextavailableat: ''
+
+			},
+			{
+				runwayname: 'runway4',
+				runwaystartsattop: "-200",
+				planetype: '',
+				flightnum: '',
+				status: "Open",
+				nextavailableat: ''
+
+			}
+
+
+		];
+
+		function GetAudioForCurrentGate(gatename, audioSource) {
+			var ad = document.createElement('audio');
+			ad.style.display = "none";
+			ad.src = audioSource;
+			ad.setAttribute("data-gatename", gatename);
+			return ad;
+
+		}
+
+		var IndividualGateAudioControls = [
+			{
+				Gate: "GATE 1",
+				TaxiwayAudio: GetAudioForCurrentGate('GATE 1', "TaxiwayMusic.mp3"),
+				SeatBeltAudio: GetAudioForCurrentGate('GATE 1', "FastenSeatBelt.mp3"),
+				TakeOffAudio: GetAudioForCurrentGate('GATE 1', "TakeOff.mp3")
+			},
+			{
+				Gate: "GATE 2",
+				TaxiwayAudio: GetAudioForCurrentGate('GATE 2', "TaxiwayMusic.mp3"),
+				SeatBeltAudio: GetAudioForCurrentGate('GATE 2', "FastenSeatBelt.mp3"),
+				TakeOffAudio: GetAudioForCurrentGate('GATE 2', "TakeOff.mp3")
+			},
+			{
+				Gate: "GATE 3",
+				TaxiwayAudio: GetAudioForCurrentGate('GATE 3', "TaxiwayMusic.mp3"),
+				SeatBeltAudio: GetAudioForCurrentGate('GATE 3', "FastenSeatBelt.mp3"),
+				TakeOffAudio: GetAudioForCurrentGate('GATE 3', "TakeOff.mp3")
+			},
+			{
+				Gate: "GATE 4",
+				TaxiwayAudio: GetAudioForCurrentGate('GATE 4', "TaxiwayMusic.mp3"),
+				SeatBeltAudio: GetAudioForCurrentGate('GATE 4', "FastenSeatBelt.mp3"),
+				TakeOffAudio: GetAudioForCurrentGate('GATE 4', "TakeOff.mp3")
+			},
+			{
+				Gate: "GATE 5",
+				TaxiwayAudio: GetAudioForCurrentGate('GATE 5', "TaxiwayMusic.mp3"),
+				SeatBeltAudio: GetAudioForCurrentGate('GATE 5', "FastenSeatBelt.mp3"),
+				TakeOffAudio: GetAudioForCurrentGate('GATE 5', "TakeOff.mp3")
+			}
+
+		];
+
+		var GateDetails = [
+
+			{
+				gatename: 'GATE 1',
+				planetakeoffleftpos: "100",
+				planemovementtorightpos: "1100",
+				runwayleftstoppos: "950",
+				flightnum: '',
+				planetype: '',
+				status: "Open",
+				nextavailableat: ''
+			},
+
+			{
+				gatename: 'GATE 2',
+				planetakeoffleftpos: "-150",
+				planemovementtorightpos: "900",
+				runwayleftstoppos: "730",
+				flightnum: '',
+				planetype: '',
+				status: "Open",
+				nextavailableat: ''
+			},
+			{
+				gatename: 'GATE 3',
+				planetakeoffleftpos: "-300",
+				planemovementtorightpos: "650",
+				runwayleftstoppos: "510",
+				flightnum: '',
+				planetype: '',
+				status: "Open",
+				nextavailableat: ''
+			},
+			{
+				gatename: 'GATE 4',
+				planetakeoffleftpos: "-450",
+				planemovementtorightpos: "450",
+				runwayleftstoppos: "290",
+				flightnum: '',
+				planetype: '',
+				status: "Open",
+				nextavailableat: ''
+			},
+			{
+				gatename: 'GATE 5',
+				planetakeoffleftpos: "-600",
+				planemovementtorightpos: "200",
+				runwayleftstoppos: "60",
+				flightnum: '',
+				planetype: '',
+				status: "Open",
+				nextavailableat: ''
+			}
+
+		];
+
+
+
+		async function playAudiov3(audiofile, gatenm) {
+
+			try {
+
+				var gatecontrols = IndividualGateAudioControls.find(x => x.Gate == gatenm);
+				if (audiofile == 'TaxiwayAudio')
+					await gatecontrols.TaxiwayAudio.play();
+				if (audiofile == 'SeatBeltAudio')
+					await gatecontrols.SeatBeltAudio.play();
+				if (audiofile == 'TakeOffAudio')
+					await gatecontrols.TakeOffAudio.play();
+			} catch (err) {
+
+			}
+		}
+
+
+		async function pauseAudiov3(audiofile, gatenm) {
+
+			try {
+
+				var gatecontrols = IndividualGateAudioControls.find(x => x.Gate == gatenm);
+				if (audiofile == 'TaxiwayAudio') {
+					await gatecontrols.TaxiwayAudio.pause(); gatecontrols.TaxiwayAudio.currentTime = 0;
+				}
+				if (audiofile == 'SeatBeltAudio') {
+					await gatecontrols.SeatBeltAudio.pause(); gatecontrols.SeatBeltAudio.currentTime = 0;
+				}
+				if (audiofile == 'TakeOffAudio') {
+					await gatecontrols.TakeOffAudio.pause(); gatecontrols.TakeOffAudio.currentTime = 0;
+				}
+			} catch (err) {
+
+			}
+		}
+
+		function simulatev3(plane, toppos, leftpos, runwaynm) {
+
+			var selectedGate = plane.parentElement.id;
+
+			var endtoppos = runwayDetails.find(x => x.runwayname == runwaynm).runwaystartsattop;
+			var takeoffleftpos = GateDetails.find(x => x.gatename == selectedGate).planetakeoffleftpos;
+			var endleftpos = GateDetails.find(x => x.gatename == selectedGate).planemovementtorightpos;
+			var runwayleftpos = GateDetails.find(x => x.gatename == selectedGate).runwayleftstoppos;
+
+			playAudiov3('TaxiwayAudio', selectedGate);
+
+			var movetoRunway = setInterval(MovePlaneToRunWayv3, 20); //10
+
+
+			function MovePlaneToRunWayv3() {
+
+				if (toppos == -80) {
+
+					plane.style.transform = "rotate(90deg)";
+
+					plane.style.left = ++leftpos;
+					if (leftpos == endleftpos) {
+						plane.src = "AeroPlane1.jpg";
+						plane.style.transform = "rotate(0deg)";
+						--toppos;
+						plane.style.top = toppos + 'px';
+
+					}
+
+				}
+				else if (toppos <= endtoppos) {
+					plane.style.webkitTransform = "rotate(-90deg)";
+					plane.style.left = --leftpos;
+					if (leftpos <= runwayleftpos) {
+						clearInterval(movetoRunway);
+						playAudiov3('SeatBeltAudio', selectedGate);
+						var takeoff = setTimeout(StartEnginev3, 5000);
+					}
+				}
+				else {
+					toppos--;
+					plane.style.top = toppos + 'px';
+				}
+
+			}
+
+			function StartEnginev3() {
+				pauseAudiov3('SeatBeltAudio', selectedGate);
+				pauseAudiov3('TaxiwayAudio', selectedGate);
+				playAudiov3('TakeOffAudio', selectedGate);
+				var takeOff = setInterval(TakeOffv3, 20);
+
+				function TakeOffv3() {
+					plane.style.left = --leftpos;
+					if (leftpos < takeoffleftpos) {
+						plane.style.transform = "rotate(-40deg)";
+						plane.style.left = --leftpos;
+						plane.style.top = --toppos;
+
+						if (leftpos < takeoffleftpos - 200) {
+							plane.style.display = "none";
+							var g = document.getElementById(selectedGate);
+							var e = g.querySelector('[data-type="planeimage"]');
+							if (!e) {
+								g.removeChild(e);
+							}
+							setTimeout(fadeOutJetSoundv3, 3000);
+
+							clearInterval(takeOff);
+						}
+					}
+
+				}
+
+				function fadeOutJetSoundv3() {
+					pauseAudiov3('TakeOffAudio', selectedGate);
+
+				}
+
+
+
+			}
+
+
+		}
+
+
+	</script>
+
+	<script>
+
+		var availableGate = '';
+		var availableRunway = '';
+		var OpenGateEvent = new CustomEvent("OpenGate");
+		var OpenRunwayEvent = new CustomEvent("OpenRunway");
+
+		function GateOpeningHandler(e) {
+			availableGate.status = "Open";
+			availableGate.flightnum = '';
+			availableGate.nextavailableat = '';
+			availableGate.planetype = '';
+
+			document.getElementById(availableGate.gatename).children[0].innerHTML = "<span><b>" + availableGate.gatename.toUpperCase() + "-OPEN<b></span>";
+			var g = document.getElementById(availableGate.gatename);
+			var m = g.querySelector('[data-type="message"]');
+			if (m)
+				g.removeChild(m);
+
+			//remove flight from gate
+			var i = g.querySelector('[data-type="planeimage"]');
+			if (!i) {
+				g.removeChild(i);
+			}
+			var color = BGColors.find(x => x.colorname == g.style.backgroundColor);
+			if (color) {
+				color.isused = false;
+			}
+			g.style.backgroundColor = "#F8665E";
+		}
+
+		function RunwayOpeningHandler(e) {
+
+			availableRunway.status = "Open";
+			availableRunway.flightnum = '';
+			availableRunway.nextavailableat = '';
+			availableRunway.planetype = '';
+
+			document.getElementById(availableRunway.runwayname).style.backgroundColor = "#C7C7C7";
+			document.getElementById(availableRunway.runwayname).parentElement.children[1].style.backgroundColor = "#C7C7C7";
+			document.getElementById(availableRunway.runwayname).removeChild(document.getElementById(availableRunway.runwayname).children[1]);
+
+		}
+
+
+		function getCurrentDateTime() {
+			return new Date();
+		}
+
+		var retrievedDepartures = '';
+		var BGColors = '';
+		var currentDateTime = getCurrentDateTime();
+
+		(function SimulateRealTimeATC() {
+			BGColors = [
+
+				{
+					colorname: "blue",
+					isused: false
+				},
+				{
+					colorname: "green",
+					isused: false
+				},
+				{
+					colorname: "maroon",
+					isused: false
+				},
+				{
+					colorname: "purple",
+					isused: false
+				}
+
+			];
+
+			retrievedDepartures = [
+				{
+					FlightID: 1,
+					FlightNumber: "AZ901",
+					PlaneType: "Boeing 747",
+					Type: "Depart",
+					DepartTime: new Date(currentDateTime.getTime() + 1 * 60000),//when it moves to empty runway and fly away - 1*60000
+					ArrivalTime: new Date(currentDateTime.getTime() + 2 * 60000),//when flight comes back on destination on empty runway and gate and complete journey
+					From: "Kathmandu",
+					To: "Melbourne",
+					Status: "OnTime",
+					RunWayAssigned: '',
+					GateAssigned: ''
+				},
+
+				{
+					FlightID: 2,
+					FlightNumber: "IND901",
+					PlaneType: "Airbus 380",
+					Type: "Depart",
+					DepartTime: new Date(currentDateTime.getTime() + 1 * 60000),//when it moves to empty runway and fly away
+					ArrivalTime: new Date(currentDateTime.getTime() + 3 * 60000),//when flight comes back on destination on empty runway and gate and complete journey
+					From: "Mahendranagar",
+					To: "Paris",
+					Status: "OnTime",
+					RunWayAssigned: '',
+					GateAssigned: ''
+				},
+
+				{
+					FlightID: 3,
+					FlightNumber: "9W795",
+					PlaneType: "Airbus 380",
+					Type: "Depart",
+					DepartTime: new Date(currentDateTime.getTime() + 1 * 60000),//when it moves to empty runway and fly away
+					ArrivalTime: new Date(currentDateTime.getTime() + 4 * 60000),//when flight comes back on destination on empty runway and gate and complete journey
+					From: "Kathmandu",
+					To: "Schiphol",
+					Status: "OnTime",
+					RunWayAssigned: '',
+					GateAssigned: ''
+				},
+				{
+					FlightID: 4,
+					FlightNumber: "9W796",
+					PlaneType: "Airbus 380",
+					Type: "Depart",
+					DepartTime: new Date(currentDateTime.getTime() + 2 * 60000),//when it moves to empty runway and fly away
+					ArrivalTime: new Date(currentDateTime.getTime() + 4 * 60000),//when flight comes back on destination on empty runway and gate and complete journey
+					From: "Kathmandu",
+					To: "London",
+					Status: "OnTime",
+					RunWayAssigned: '',
+					GateAssigned: ''
+				},
+				{
+					FlightID: 5,
+					FlightNumber: "AW838",
+					PlaneType: "Airbus 380",
+					Type: "Depart",
+					DepartTime: new Date(currentDateTime.getTime() + 2 * 60000),//when it moves to empty runway and fly away
+					ArrivalTime: new Date(currentDateTime.getTime() + 4 * 60000),//when flight comes back on destination on empty runway and gate and complete journey
+					From: "Dhangadhi",
+					To: "New York City",
+					Status: "OnTime",
+					RunWayAssigned: '',
+					GateAssigned: ''
+				},
+				{
+					FlightID: 6,
+					FlightNumber: "AW820",
+					PlaneType: "Airbus 380",
+					Type: "Depart",
+					DepartTime: new Date(currentDateTime.getTime() + 2 * 60000),//when it moves to empty runway and fly away
+					ArrivalTime: new Date(currentDateTime.getTime() + 4 * 60000),//when flight comes back on destination on empty runway and gate and complete journey
+					From: "Nepaljung",
+					To: "New York City",
+					Status: "OnTime",
+					RunWayAssigned: '',
+					GateAssigned: ''
+				},
+				{
+					FlightID: 7,
+					FlightNumber: "9W888",
+					PlaneType: "Airbus 380",
+					Type: "Depart",
+					DepartTime: new Date(currentDateTime.getTime() + 3 * 60000),//when it moves to empty runway and fly away
+					ArrivalTime: new Date(currentDateTime.getTime() + 4 * 60000),//when flight comes back on destination on empty runway and gate and complete journey
+					From: "London",
+					To: "Paris",
+					Status: "OnTime",
+					RunWayAssigned: '',
+					GateAssigned: ''
+				},
+
+				{
+					FlightID: 8,
+					FlightNumber: "IND",
+					PlaneType: "Airbus 380",
+					Type: "Depart",
+					DepartTime: new Date(currentDateTime.getTime() + 3 * 60000),//when it moves to empty runway and fly away
+					ArrivalTime: new Date(currentDateTime.getTime() + 4 * 60000),//when flight comes back on destination on empty runway and gate and complete journey
+					From: "kathmandu",
+					To: "Dhangadhi",
+					Status: "OnTime",
+					RunWayAssigned: '',
+					GateAssigned: ''
+				},
+				{
+					FlightID: 9,
+					FlightNumber: "IN23",
+					PlaneType: "Airbus 380",
+					Type: "Depart",
+					DepartTime: new Date(currentDateTime.getTime() + 3 * 60000),//when it moves to empty runway and fly away
+					ArrivalTime: new Date(currentDateTime.getTime() + 4 * 60000),//when flight comes back on destination on empty runway and gate and complete journey
+					From: "New Delhi",
+					To: "Kathmandu",
+					Status: "OnTime",
+					RunWayAssigned: '',
+					GateAssigned: ''
+				},
+				{
+					FlightID: 10,
+					FlightNumber: "JP01 - ND to TOK",
+					PlaneType: "Airbus 380",
+					Type: "Depart",
+					DepartTime: new Date(currentDateTime.getTime() + 3 * 60000),//when it moves to empty runway and fly away
+					ArrivalTime: new Date(currentDateTime.getTime() + 4 * 60000),//when flight comes back on destination on empty runway and gate and complete journey
+					From: "Delhi",
+					To: "Kathmandu",
+					Status: "OnTime",
+					RunWayAssigned: '',
+					GateAssigned: ''
+				}
+
+			];
+
+			var scheduleDepartures = setInterval(RunDepartures, 15000);
+			function RunDepartures() {
+				var findInProgressFlights = retrievedDepartures.filter(x => x.Status != 'Ready Departure');
+				if (findInProgressFlights.length > 0) {
+					var currentTime = new Date().getMinutes();
+					for (i = 0; i < findInProgressFlights.length; i++) {
+						SetFlightToBoard(findInProgressFlights[i], currentTime);
+					}
+				}
+				else {
+					clearInterval(scheduleDepartures);
+				}
+
+			}
+
+
+			var OpensGatesAndRunways = setInterval(OpensGatesAndRunways, 5000);
+			function OpensGatesAndRunways() {
+				var closedGates = GateDetails.filter(x => x.status == "Closed" && x.nextavailableat.getMinutes() <= getCurrentDateTime().getMinutes());
+				if (closedGates.length > 0)
+					closedGates.forEach(function (e) {
+
+						e.status = "Open";
+						e.flightnum = '';
+						e.nextavailableat = '';
+						e.planetype = '';
+
+						document.getElementById(e.gatename).children[0].innerHTML = "<span><b>" + e.gatename.toUpperCase() + "-OPEN<b></span>";
+						//Reset Gate Message
+						var g = document.getElementById(e.gatename);
+						var m = g.querySelector('[data-type="message"]');
+						if (m)
+							g.removeChild(m);
+
+						//remove flight from gate
+						var i = g.querySelector('[data-type="planeimage"]');
+						if (i) {
+							g.removeChild(i);
+						}
+
+						var color = BGColors.find(x => x.colorname == g.style.backgroundColor);
+						if (color) {
+							color.isused = false;
+
+						}
+						g.style.backgroundColor = "#F8665E";
+
+					});
+
+				var closedRunways = runwayDetails.filter(x => x.status == "Closed" && x.nextavailableat.getMinutes() <= getCurrentDateTime().getMinutes())
+				if (closedRunways.length > 0)
+					closedRunways.forEach(function (e) {
+						e.status = "Open";
+						e.flightnum = '';
+						e.nextavailableat = '';
+						e.planetype = '';
+
+						document.getElementById(e.runwayname).style.backgroundColor = "#C7C7C7";
+						document.getElementById(e.runwayname).parentElement.children[1].style.backgroundColor = "#C7C7C7";
+						document.getElementById(e.runwayname).removeChild(document.getElementById(e.runwayname).children[1]);
+					});
+			}
+
+
+			function SetFlightToBoard(flight, currentTime) {
+
+				availableGate = null;
+				availableRunway = null;
+				//THIS ENTIRE PROCESS SHOULD RUN ASYNC. IF WE WAIT SYNC WAY AND IT TAKES MORE TIME TO EXECUTE THEN NEXT FLIGHTS WILL NOT BE PICKED WITH THIS LOGIC.
+				if (flight.DepartTime.getMinutes() <= currentTime && flight.Status != "Ready Departure") //or status != "ready for boarding"
+				{
+
+					if (flight.Status == "OnTime" || flight.Status == "Waiting for Gate" || flight.Status == "Unassigned") {
+
+						availableGate = GateDetails.find(x => x.status == "Open");
+
+						if (availableGate) {
+							//debugger;							
+							availableGate.status = "Closed";
+							availableGate.flightnum = flight.FlightNumber;
+							availableGate.planetype = flight.PlaneType;
+
+							flight.GateAssigned = availableGate;
+						}
+						else {
+
+							//WE ARE SURE IF NEXTAVAILABLETIME IS ALREADY 2 MIN OVER DEPART TIME AND GATE IS CLOSED THEN WE NEED TO OPEN IT.
+							availableGate = GateDetails.find(x => x.status == "Closed" && x.nextavailableat.getMinutes() <= currentTime) //getCurrentDateTime().getMinutes());
+							if (availableGate) {
+								//openedGate = availableGate;										
+
+								document.getElementById(availableGate.gatename).dispatchEvent(OpenGateEvent);
+
+								availableGate.status = "Closed";
+								availableGate.flightnum = flight.FlightNumber;
+								availableGate.planetype = flight.PlaneType;
+								//availableGate.nextavailableat = new Date(getCurrentDateTime().getTime() + 1*60000);//2 min after assignment it will open again
+								flight.GateAssigned = availableGate;
+							}
+							else {
+								//Log no gate available
+								//keep flight status - waiting for Gate Assignment.
+								availableGate = null;
+								//flight.Status = "Waiting for Gate";
+								flight.GateAssigned = '';
+								//flight.RunWayAssigned = '';
+
+							}
+
+						}
+					}
+
+					if (flight.Status == "OnTime" || flight.Status == "Waiting for Runway" || flight.Status == "Unassigned") {
+
+						availableRunway = runwayDetails.find(x => x.status == "Open");
+
+						if (availableRunway) {
+
+							availableRunway.status = "Closed";
+							availableRunway.flightnum = flight.FlightNumber;
+							availableRunway.planetype = flight.PlaneType;
+							flight.RunWayAssigned = availableRunway;
+						}
+						else {
+
+							//WE ARE SURE IF NEXTAVAILABLETIME IS ALREADY 2 MIN OVER DEPART TIME AND RUNWAY IS CLOSED THEN WE NEED TO OPEN IT.
+							availableRunway = runwayDetails.find(x => x.status == "Closed" && x.nextavailableat.getMinutes() <= currentTime) //getCurrentDateTime().getMinutes());
+							if (availableRunway) {
+								document.getElementById(availableRunway.runwayname).dispatchEvent(OpenRunwayEvent);
+
+								availableRunway.status = "Closed";
+								availableRunway.flightnum = flight.FlightNumber;
+								availableRunway.planetype = flight.PlaneType;
+								flight.RunWayAssigned = availableRunway;
+							}
+							else {
+								//Log no runway available
+								//keep flight status - waiting for runway Assignment.
+								availableRunway = null;
+								flight.Status = "Waiting for Runway";
+								//flight.GateAssigned = '';
+								flight.RunWayAssigned = '';
+
+							}
+
+						}
+					}
+
+					if (flight.GateAssigned != '' && flight.RunWayAssigned != '') {
+
+						flight.Status = "Ready Departure";
+						flight.GateAssigned.status = "Closed";
+						flight.RunWayAssigned.status = "Closed";
+
+						flight.GateAssigned.nextavailableat = new Date(getCurrentDateTime().getTime() + 2 * 60000);//2 min after assignment it will open again									
+						flight.RunWayAssigned.nextavailableat = new Date(getCurrentDateTime().getTime() + 2 * 60000);//2 min after assignment it will open again
+
+						//Reset Gate Message
+						var g = document.getElementById(flight.GateAssigned.gatename);
+						var m = g.querySelector('[data-type="message"]');
+						if (m)
+							g.removeChild(m);
+
+						//set up gate message again
+						var gateMessage = document.createElement('div');
+						gateMessage.setAttribute("data-type", "message");
+						gateMessage.classList.add("background");
+						gateMessage.style.paddingLeft = "10px";
+						//debugger;
+						gateMessage.innerHTML = '<div>' + flight.GateAssigned.flightnum + '</div>';
+						gateMessage.innerHTML += '<div>Status: ' + flight.Status + '</div>';
+						gateMessage.innerHTML += '<div>From: ' + flight.From + '</div>';
+						gateMessage.innerHTML += '<div>To: ' + flight.To + '</div>';
+						gateMessage.innerHTML += '<div>Next Available: ' + flight.GateAssigned.nextavailableat.getHours() + ":" +
+							(flight.GateAssigned.nextavailableat.getMinutes() < 10 ? '0' : '') + flight.GateAssigned.nextavailableat.getMinutes()
+							+ '</div>';
+
+						//add flight to gate
+						var elem = '';
+						var elem = g.querySelector('[data-type="planeimage"]');
+						if (!elem) {
+							elem = document.createElement("img");
+							elem.setAttribute("data-type", "planeimage");
+							elem.setAttribute("src", "AeroPlaneRed.png");
+							elem.setAttribute("class", "standingPlane");
+							elem.setAttribute("id", "plane_" + i);
+
+							elem.addEventListener("click", function () { simulatev3(this, 20, 60, flight.RunWayAssigned.runwayname); });
+							document.getElementById(flight.GateAssigned.gatename).appendChild(elem);
+						}
+						else {
+							elem.addEventListener("click", function () { simulatev3(this, 20, 60, flight.RunWayAssigned.runwayname); });
+						}
+						document.getElementById(flight.GateAssigned.gatename).children[0].innerHTML = "<span><b>" + flight.GateAssigned.gatename.toUpperCase() + "-DEPARTURE<b></span>";
+
+						//document.getElementById(flight.GateAssigned.gatename).style.backgroundColor = "#F8665E";
+						var color = BGColors.find(x => x.isused == false);
+						if (color) {
+							document.getElementById(flight.GateAssigned.gatename).style.backgroundColor = color.colorname; //set first available color to gate
+							document.getElementById(flight.RunWayAssigned.runwayname).parentElement.children[1].style.backgroundColor = color.colorname; //set first available color to runway road
+							color.isused = true;
+						}
+						else {
+							document.getElementById(flight.GateAssigned.gatename).style.backgroundColor = "#F8665E";
+							document.getElementById(flight.RunWayAssigned.runwayname).parentElement.children[1].style.backgroundColor = "#C7C7C7";
+						}
+
+						//gateMessage.innerHTML+= '<div>Gate Next Available: <b>TBD</b> </div>';
+						document.getElementById(flight.GateAssigned.gatename).appendChild(gateMessage);
+
+						//document.getElementById(flight.GateAssigned.gatename).style.backgroundColor = "#BA0000";									
+
+						//Set up Runway Message
+						var div = document.createElement('div');
+						div.classList.add("pane");
+						div.innerHTML = '<span> Flight:' + flight.RunWayAssigned.flightnum + '</span>  <span>Next Available: ' + flight.RunWayAssigned.nextavailableat.getHours() + ':' + (flight.RunWayAssigned.nextavailableat.getMinutes() < 10 ? '0' : '') + flight.RunWayAssigned.nextavailableat.getMinutes() + ' hrs</span>';
+						document.getElementById(flight.RunWayAssigned.runwayname).appendChild(div);
+						elem.click();
+
+					}
+					else if (flight.GateAssigned != '' && flight.RunWayAssigned == '') {
+						flight.Status = "Waiting for Runway";
+						flight.GateAssigned.status = "Waiting";
+
+
+						//Reset Gate Message
+						var g = document.getElementById(flight.GateAssigned.gatename);
+						var m = g.querySelector('[data-type="message"]');
+						if (m)
+							g.removeChild(m);
+						//SET UP GATE MESSAGE
+						var gateMessage = document.createElement('div');
+						gateMessage.setAttribute("data-type", "message");
+						gateMessage.classList.add("background");
+						gateMessage.innerHTML = '<div>' + flight.GateAssigned.flightnum + '</div>';
+						gateMessage.innerHTML += '<div>Status: ' + flight.Status + '</div>';
+						gateMessage.innerHTML += '<div>From: ' + flight.From + '</div>';
+						gateMessage.innerHTML += '<div>To: ' + flight.To + '</div>';
+						gateMessage.innerHTML += '<div>Next Available: <b>TBD</b> </div>';	//probably later can find out based on next availability of any runway	
+
+						//add flight to gate
+						var e = g.querySelector('[data-type="planeimage"]');
+						if (!e) {
+							//ADD FLIGHT ONLY IF ITS NOT THERE
+							var elem = document.createElement("img");
+							elem.setAttribute("data-type", "planeimage");
+							elem.setAttribute("src", "AeroPlane1.jpg");
+							elem.setAttribute("class", "standingPlane");
+							elem.setAttribute("id", "plane_" + i);
+
+							//elem.addEventListener("click",function() { simulatev2(this,20,60,flight.RunWayAssigned.runwayname); });
+							document.getElementById(flight.GateAssigned.gatename).appendChild(elem);
+						}
+
+						document.getElementById(flight.GateAssigned.gatename).appendChild(gateMessage);
+						//debugger;
+						document.getElementById(flight.GateAssigned.gatename).style.backgroundColor = "Gray";
+						document.getElementById(flight.GateAssigned.gatename).children[0].innerHTML = "<span><b>" + flight.GateAssigned.gatename.toUpperCase() + "-WAITING<b></span>";
+
+
+						//show flight but wait - Delayed
+					}
+					else if (flight.GateAssigned == '' && flight.RunWayAssigned != '') //need to see its behavior when adding large number of parallel flights 
+					{
+						flight.RunWayAssigned.status = "Waiting";
+						flight.Status = "Waiting for Gate";
+						flight.nextavailableat = 'TBD';
+						//noting can be done and have to wait - Delayed
+					}
+					else {
+						flight.Status = "Unassigned";
+						flight.nextavailableat = 'TBD';
+
+					}
+
+				}
+
+			}
+
+		})();
+	</script>
+</head>
+
+<body>
+
+	<div>
+		<audio id="planestartaudio" style="display:none;" src="TaxiwayMusic.mp3" loop="true" />
+		<audio id="seatBelt" style="display:none;" src="FastenSeatBelt.mp3" loop="true" />
+		<audio id="planetakeoffaudio" style="display:none;" src="TakeOff.mp3" />
+
+	</div>
+
+	<div
+		style="width:100%;  height:100%; background-color:black;border-style:solid; border-width:0px; border-radius:40px;">
+		<div class="pane"> <i><b>Air Traffic Controller<b></i> </div>
+		<!-- background-color:black; -->
+
+		<div>
+			<div id="runway1" class="runway" style="float:left;">
+				<!-- <h2>Runway - ONE </h2> -->
+				<img src="runway.png" width="850" height="70" />
+			</div>
+			<div id="torunway1" class="torunway" style="float:left;">
+				<h4 class="pathway">WAY TO RUNWAY 1</h4>
+				<img src="LeftGray.png" width="60" height="40" style="padding-top:20px;padding-left:20px;" />
+
+			</div>
+		</div>
+
+		<div style="clear:both;">
+			<div id="runway2" class="runway" style="float:left;">
+				<!-- <h2>Runway - TWO</h2>				 -->
+				<img src="runway.png" width="850" height="70" />
+			</div>
+			<div id="torunway2" class="torunway" style="float:left;">
+				<h4 class="pathway">WAY TO RUNWAY 2</h4>
+				<img src="LeftGray.png" width="60" height="40" style="padding-top:20px;padding-left:20px;" />
+			</div>
+		</div>
+
+		<div style="clear:both;">
+			<div id="runway3" class="runway" style="float:left;">
+				<!-- <h2>Runway - THREE</h2>				 -->
+				<img src="runway.png" width="850" height="70" />
+			</div>
+			<div id="torunway3" class="torunway" style="float:left;">
+				<h4 class="pathway">WAY TO RUNWAY 3</h4>
+				<img src="LeftGray.png" width="60" height="40" style="padding-top:20px;padding-left:20px;" />
+			</div>
+		</div>
+
+		<div style="clear:both;">
+			<div id="runway4" class="runway" style="float:left;">
+				<!-- <h2>Runway - FOUR</h2>			 -->
+				<img src="runway.png" width="850" height="70" />
+			</div>
+			<div id="torunway4" class="torunway" style="float:left;">
+				<h4 class="pathway">WAY TO RUNWAY 4</h4>
+				<img src="LeftGray.png" width="60" height="40" style="padding-top:20px;padding-left:20px;" />
+			</div>
+		</div>
+		<div style="clear:both;" />
+
+		<div id="pathway" class="boarding">
+
+			<img src="RightRed.png" width="100" height="50" style="padding-top:20px;margin-right:80px;" />
+			<img src="RightRed.png" width="100" height="50" style="padding-top:20px;margin-right:80px;" />
+			<img src="RightRed.png" width="100" height="50" style="padding-top:20px;margin-right:80px;" />
+			<img src="RightRed.png" width="100" height="50" style="padding-top:20px;margin-right:80px;" />
+			<img src="RightRed.png" width="100" height="50" style="padding-top:20px;margin-right:80px;" />
+			<!-- <img src="RightRed.png" width="60" height="50" style="padding-top:20px;margin-right:80px;"/> -->
+			<img src="ArrowUpRed.png" width="60" height="50" style="padding-top:20px;margin-right:0px;" />
+		</div>
+
+		<div id="GATE 1" class="gate" data-gatename="GATE 1">
+			<div class="pane">
+				<span><b>GATE 1-OPEN</b><span>
+			</div>
+
+		</div>
+
+		<div id="GATE 2" class="gate" data-gatename="GATE 2">
+			<div class="pane">
+				<span><b>GATE 2-OPEN</b></span>
+			</div>
+
+		</div>
+
+		<div id="GATE 3" class="gate" data-gatename="GATE 3">
+			<div class="pane">
+				<span><b>GATE 3-OPEN</b></span>
+			</div>
+
+		</div>
+
+		<div id="GATE 4" class="gate" data-gatename="GATE 4">
+			<div class="pane">
+				<span><b>GATE 4-OPEN</b></span>
+			</div>
+
+		</div>
+
+		<div id="GATE 5" class="gate" data-gatename="GATE 5">
+			<div class="pane">
+				<span><b>GATE 5-OPEN</b></span>
+			</div>
+
+		</div>
+
+	</div>
+
+	<script>
+		document.getElementById('GATE 1').addEventListener("OpenGate", GateOpeningHandler, false);
+		document.getElementById('GATE 2').addEventListener("OpenGate", GateOpeningHandler, false);
+		document.getElementById('GATE 3').addEventListener("OpenGate", GateOpeningHandler, false);
+		document.getElementById('GATE 4').addEventListener("OpenGate", GateOpeningHandler, false);
+		document.getElementById('GATE 5').addEventListener("OpenGate", GateOpeningHandler, false);
+
+		document.getElementById('runway1').addEventListener("OpenRunway", RunwayOpeningHandler, false);
+		document.getElementById('runway2').addEventListener("OpenRunway", RunwayOpeningHandler, false);
+		document.getElementById('runway3').addEventListener("OpenRunway", RunwayOpeningHandler, false);
+		document.getElementById('runway4').addEventListener("OpenRunway", RunwayOpeningHandler, false);
+	</script>
+
+</body>
+
+</html>
